@@ -11,17 +11,30 @@ node {
             maven: 'M3') {
             // Run the maven build
             sh "mvn -f services/java-vote-service-redis/pom.xml clean install"
-        } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+        } 
     }
 
     stage('Package jar file with Maven into Docker') {
-
+        withMaven(
+            // Maven installation declared in the Jenkins "Global Tool Configuration"
+            maven: 'M3') {
+            // Run the maven build
+            sh "mvn -f services/java-vote-service-redis/pom.xml install dockerfile:build"
+        } 
     }
 
-   /* stage('Push image') {
+   stage('Push image with Mave to container registry') {
+        withMaven(
+            // Maven installation declared in the Jenkins "Global Tool Configuration"
+            maven: 'M3') {
+            // Run the maven build
+            sh "mvn -f services/java-vote-service-redis/pom.xml install dockerfile:push"
+        } 
+        /*
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
-    }*/
+        */
+    }
 }
