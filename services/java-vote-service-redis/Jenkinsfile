@@ -23,7 +23,7 @@ node {
         } 
     }
 
-   stage('Push image with Mave to container registry') {
+   stage('Push image with Maven to container registry') {
 
         docker.withRegistry('https://sabbour.azurecr.io', 'acr-hub-credentials') {
             app.push("${env.BUILD_NUMBER}")
