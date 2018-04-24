@@ -100,6 +100,11 @@
 
 In the `services/java-vote-service-redis` folder, have a look at the `pom.xml` file which tells Maven how to build the project and `Jenkinsfile` which is the pipeline that Jenkins will follow.
 
+## Checkout the Kubernetes deployment files
+In the `services/java-vote-service-redis/kubernetes` folder, have a look at the `yaml` files and note the placeholders starting and ending with `XX`. Those placeholders are replaced by the Jenkins pipeline.
+
+Also note that this configuration was done for a Kubernetes 1.9.6 cluster. You may need to update the apiVersions accordingly, depending on your cluster version. Refer to http://kubernetes.io.
+
 ## Trigger the build
 
 In Jenkins, trigger a build and observe the pipeline, when the build is done, you should find a new image pushed in your Azure Container Registry, tagged with the current build number.
