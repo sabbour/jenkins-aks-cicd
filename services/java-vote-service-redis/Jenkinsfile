@@ -14,7 +14,7 @@ node {
             // Maven installation declared in the Jenkins "Global Tool Configuration"
             maven: 'M3') {
             // Run the maven build
-            sh "mvn pom.xml clean install"
+            sh "mvn clean install"
         } 
     }
 
