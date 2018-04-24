@@ -29,4 +29,26 @@ node {
             app.push("latest")
         }
     }
+
+    stage("Deploy to UAT") {
+        def userInput = input(
+            id: 'userInput', message: 'Deploy to UAT?', parameters: [
+            [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
+        ])
+
+        echo ("Env: "+userInput)
+
+        /* Execute kubectl commands to deploy to UAT namespace */
+    }
+
+        stage("Deploy to Production") {
+        def userInput = input(
+            id: 'userInput', message: 'Deploy to Production?', parameters: [
+            [$class: 'TextParameterDefinition', defaultValue: 'prod', description: 'Environment', name: 'env']
+        ])
+
+        echo ("Env: "+userInput)
+
+        /* Execute kubectl commands to deploy to Production namespace */
+    }
 }
