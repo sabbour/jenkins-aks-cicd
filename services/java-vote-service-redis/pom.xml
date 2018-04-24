@@ -13,9 +13,6 @@
     </parent>
     <properties>
         <java.version>1.8</java.version>
-        <dockerfile-maven-version>1.3.6</dockerfile-maven-version>
-        <!-- Docker repository to upload to -->
-        <docker.image.prefix>sabbour</docker.image.prefix>
     </properties>
     <dependencies>
         <dependency>
@@ -35,33 +32,12 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>java-vote-service-redis</finalName>
         <plugins>
             <!-- Spring Boot plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <!-- Spotify plugin to build Docker images -->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${dockerfile-maven-version}</version>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                </configuration>
             </plugin>
         </plugins>
     </build>
