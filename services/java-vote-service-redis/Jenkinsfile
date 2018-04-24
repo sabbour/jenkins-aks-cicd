@@ -18,9 +18,9 @@ node {
     }
 
     stage('Build image with Docker') {
-         dir('services/java-vote-service-redis') {
-        app = docker.build("services/java-vote-service-redis:${env.BUILD_NUMBER}")
-         }
+        dir('services/java-vote-service-redis') {
+            app = docker.build("services/java-vote-service-redis:${env.BUILD_NUMBER}")
+        }
     }
 
    stage('Push image to container registry') {
@@ -31,25 +31,44 @@ node {
     }
 
     stage("Deploy to UAT?") {
-        def userInput = input(
-            id: 'userInput', message: 'Deploy to UAT?', parameters: [
-            [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
-        ])
+        dir('services/java-vote-service-redis/kubernetes') {
+            def namespace = input(
+                id: 'namespace', message: 'Deploy to UAT?', parameters: [
+                [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
+            ])
 
-        echo ("Env: "+userInput)
+            def imagename="services/java-vote-service-redis:${env.BUILD_NUMBER}"
 
-        /* Execute kubectl commands to deploy to UAT namespace */
-        sh "kubectl create ns $userInput --kubeconfig /var/lib/jenkins/config"
+            // String replace in the deployment.yaml file
+            sh "sed -i.bak s/:\\\${NAMESPACE}/:$namespace/g deployment.yaml"
+            sh "sed -i.bak s/:\\\${NAMESPACE}/:$namespace/g namespace.yaml"
+       
+            // Execute kubectl commands to deploy namespace
+            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
+       
+            sh "sed -i.bak s/:\\\${IMAGE_NAME}/:$imagename/g deployment.yaml"
+            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"            
+        }
     }
 
-        stage("Deploy to Production?") {
-        def userInput = input(
-            id: 'userInput', message: 'Deploy to Production?', parameters: [
-            [$class: 'TextParameterDefinition', defaultValue: 'prod', description: 'Environment', name: 'env']
-        ])
+    stage("Deploy to Production?") {
+        dir('services/java-vote-service-redis/kubernetes') {
+            def namespace = input(
+                id: 'namespace', message: 'Deploy to Production?', parameters: [
+                [$class: 'TextParameterDefinition', defaultValue: 'prod', description: 'Environment', name: 'env']
+            ])
 
-        echo ("Env: "+userInput)
+           def imagename="services/java-vote-service-redis:${env.BUILD_NUMBER}"
 
-        /* Execute kubectl commands to deploy to Production namespace */
+            // String replace in the deployment.yaml file
+            sh "sed -i.bak s/:\\\${NAMESPACE}/:$namespace/g deployment.yaml"
+            sh "sed -i.bak s/:\\\${NAMESPACE}/:$namespace/g namespace.yaml"
+       
+            // Execute kubectl commands to deploy namespace
+            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
+       
+            sh "sed -i.bak s/:\\\${IMAGE_NAME}/:$imagename/g deployment.yaml"
+            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"   
+        }
     }
 }
