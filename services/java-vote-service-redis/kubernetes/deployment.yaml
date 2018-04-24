@@ -16,6 +16,8 @@ spec:
     spec:
       containers:
       - name: java-vote-service
-        image: ${IMAGE_NAME}
+        image: sabbour.azurecr.io/java-vote-service-redis:${IMAGE_TAG}
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+        - name:  acr-secret

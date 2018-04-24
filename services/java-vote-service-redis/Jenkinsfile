@@ -37,16 +37,16 @@ node {
                 [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
             ])
 
-            def imagename="services/java-vote-service-redis:${env.BUILD_NUMBER}"
+            def imagetag="services/java-vote-service-redis:${env.BUILD_NUMBER}"
 
             // String replace in the deployment.yaml file
-            sh "sed -i.bak s/:\\\${NAMESPACE}/:$namespace/g deployment.yaml"
-            sh "sed -i.bak s/:\\\${NAMESPACE}/:$namespace/g namespace.yaml"
-       
+            sh "sed -i -e s/:\\\${NAMESPACE}/:$namespace/g deployment.yaml"
+            sh "sed -i -e s/:\\\${NAMESPACE}/:$namespace/g namespace.yaml"
+         
             // Execute kubectl commands to deploy namespace
             sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
        
-            sh "sed -i.bak s/:\\\${IMAGE_NAME}/:$imagename/g deployment.yaml"
+            sh "sed -i s/:\\\${IMAGE_TAG}/:$imagetag/g deployment.yaml"
             sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"            
         }
     }
@@ -58,17 +58,17 @@ node {
                 [$class: 'TextParameterDefinition', defaultValue: 'prod', description: 'Environment', name: 'env']
             ])
 
-           def imagename="services/java-vote-service-redis:${env.BUILD_NUMBER}"
+           def imagetag="services/java-vote-service-redis:${env.BUILD_NUMBER}"
 
             // String replace in the deployment.yaml file
-            sh "sed -i.bak s/:\\\${NAMESPACE}/:$namespace/g deployment.yaml"
-            sh "sed -i.bak s/:\\\${NAMESPACE}/:$namespace/g namespace.yaml"
+            sh "sed -i s/:\\\${NAMESPACE}/:$namespace/g deployment.yaml"
+            sh "sed -i s/:\\\${NAMESPACE}/:$namespace/g namespace.yaml"
        
             // Execute kubectl commands to deploy namespace
             sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
        
-            sh "sed -i.bak s/:\\\${IMAGE_NAME}/:$imagename/g deployment.yaml"
-            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"   
+            sh "sed -i s/:\\\${IMAGE_TAG}/:$imagetag/g deployment.yaml"
+            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"            
         }
     }
 }
