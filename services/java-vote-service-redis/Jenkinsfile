@@ -39,7 +39,7 @@ node {
         echo ("Env: "+userInput)
 
         /* Execute kubectl commands to deploy to UAT namespace */
-        sh "kubectl create ns $userInput"
+        sh "kubectl create ns $userInput --kubeconfig /var/lib/jenkins/config"
     }
 
         stage("Deploy to Production") {
