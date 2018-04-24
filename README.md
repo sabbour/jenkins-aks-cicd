@@ -22,6 +22,32 @@
   sudo usermod -aG docker jenkins
   ```
 
+
+- Install kubectl on the Jenkins VM
+
+    ```sh
+    sudo su
+    apt-get update && apt-get install -y apt-transport-https
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+    cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+    deb http://apt.kubernetes.io/ kubernetes-xenial main
+    EOF
+    apt-get update
+    apt-get install -y kubectl
+    ```
+
+- Copy your local Kubernetes config file to the Jenkins VM
+
+    ```sh
+    ssh <username>@<jenkins vm name>.<region>.cloudapp.azure.com "mkdir -p /home/<username>/.kube/" && scp ~/.kube/config <username>@<jenkins vm name>.<region>.cloudapp.azure.com:/home/azureuser/.kube/
+    ```
+
+    for example
+
+    ```sh
+    ssh azureuser@jenkins-sb.westeurope.cloudapp.azure.com "mkdir -p /home/azureuser/.kube/" && scp ~/.kube/config azureuser@jenkins-sb.westeurope.cloudapp.azure.com:/home/azureuser/.kube/
+    ```
+
 - Restart Docker
 
    ```sh

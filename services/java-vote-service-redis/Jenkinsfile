@@ -39,6 +39,7 @@ node {
         echo ("Env: "+userInput)
 
         /* Execute kubectl commands to deploy to UAT namespace */
+        sh "kubectl get nodes"
     }
 
         stage("Deploy to Production") {
