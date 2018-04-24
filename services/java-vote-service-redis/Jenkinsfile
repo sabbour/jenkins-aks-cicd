@@ -37,7 +37,7 @@ node {
                 [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
             ])
 
-            def imagetag="services/java-vote-service-redis:${env.BUILD_NUMBER}"
+            def imagetag="${env.BUILD_NUMBER}"
 
             // String replace namespaces
             sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g deployment.yaml"
@@ -64,7 +64,7 @@ node {
                 [$class: 'TextParameterDefinition', defaultValue: 'prod', description: 'Environment', name: 'env']
             ])
 
-           def imagetag="services/java-vote-service-redis:${env.BUILD_NUMBER}"
+           def imagetag="${env.BUILD_NUMBER}"
 
             // String replace namespaces
             sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g deployment.yaml"
