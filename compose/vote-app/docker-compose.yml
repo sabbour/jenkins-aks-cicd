@@ -1,0 +1,18 @@
+version: '3'
+services:
+  frontend:
+    ports:
+    - "81:8080"
+    image: sabbour/python-vote-frontend:0.1.0
+
+  vote-backend:
+    ports:
+    - "80:8080"
+    image: sabbour/java-vote-service-redis:0.1.0
+    environment: 
+      - REDIS_HOST=redis
+
+  redis:
+    image: redis
+    ports:
+    - "6379:6379"
