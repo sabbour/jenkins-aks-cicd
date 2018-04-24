@@ -30,7 +30,7 @@ node {
         }
     }
 
-    stage("Deploy to UAT") {
+    stage("Deploy to UAT?") {
         def userInput = input(
             id: 'userInput', message: 'Deploy to UAT?', parameters: [
             [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
@@ -42,7 +42,7 @@ node {
         sh "kubectl create ns $userInput --kubeconfig /var/lib/jenkins/config"
     }
 
-        stage("Deploy to Production") {
+        stage("Deploy to Production?") {
         def userInput = input(
             id: 'userInput', message: 'Deploy to Production?', parameters: [
             [$class: 'TextParameterDefinition', defaultValue: 'prod', description: 'Environment', name: 'env']
