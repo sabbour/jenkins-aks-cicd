@@ -25,8 +25,8 @@ node {
 
    stage('Push image to container registry') {
         docker.withRegistry('https://sabbour.azurecr.io', 'acr-credentials') {
-            app.push("services/java-vote-service-redis:${env.BUILD_NUMBER}")
-            app.push("services/java-vote-service-redis:latest")
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
         }
     }
 }
