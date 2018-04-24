@@ -46,18 +46,6 @@
 
 - Give it a name of `M3`
 
-### Configure Docker
-
-- Add Docker tool and use auto installation from https://docker.com
-
-- Give it a name of `docker`
-
-- Set environment variable **Manage Jenkins > Configure System**, on **Global Properties** to
-
-   ```sh
-   DOCKER_HOST=tcp://dockerd:2375
-   ```
-
 ### Configure Azure Container Registry credentials
 
 - Click on **Credentials > System**, then click on **Global Credentials**
