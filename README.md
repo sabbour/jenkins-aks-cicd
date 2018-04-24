@@ -105,6 +105,8 @@ In the `services/java-vote-service-redis/kubernetes` folder, have a look at the 
 
 Also note that this configuration was done for a Kubernetes 1.9.6 cluster. You may need to update the apiVersions accordingly, depending on your cluster version. Refer to http://kubernetes.io.
 
+In the `services/java-vote-service-redis/kubernetes/deployment.yaml`, make note of the `imagePullSecret` and make sure that your Kubernetes cluster has such secret configured for your namespaces corresponding to your Azure Container Registry credentials.
+
 ## Trigger the build
 
 In Jenkins, trigger a build and observe the pipeline, when the build is done, you should find a new image pushed in your Azure Container Registry, tagged with the current build number.
