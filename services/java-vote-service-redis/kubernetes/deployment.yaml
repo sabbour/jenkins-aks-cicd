@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: java-vote-service
-        image: sabbour.azurecr.io/java-vote-service-redis:XX_IMAGETAG_XX
+        image: sabbour.azurecr.io/services/java-vote-service-redis:XX_IMAGETAG_XX
         ports:
         - containerPort: 8080
       imagePullSecrets:
