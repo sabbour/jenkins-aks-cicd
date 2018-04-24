@@ -2,7 +2,7 @@ apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
   name: java-vote-service-deployment
-  namespace: ${NAMESPACE}
+  namespace: XX_NAMESPACE_XX
 spec:
   selector:
     matchLabels:
@@ -10,13 +10,13 @@ spec:
   replicas: 2 
   template: # create pods using pod definition in this template
     metadata:
-      namespace: ${NAMESPACE}
+      namespace: XX_NAMESPACE_XX
       labels:
         app: java-vote-service
     spec:
       containers:
       - name: java-vote-service
-        image: sabbour.azurecr.io/java-vote-service-redis:${IMAGE_TAG}
+        image: sabbour.azurecr.io/java-vote-service-redis:XX_IMAGETAG_XX
         ports:
         - containerPort: 8080
       imagePullSecrets:

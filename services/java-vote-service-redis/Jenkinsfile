@@ -40,13 +40,13 @@ node {
             def imagetag="services/java-vote-service-redis:${env.BUILD_NUMBER}"
 
             // String replace in the deployment.yaml file
-            sh "sed -i -e s/:\\\${NAMESPACE}/:$namespace/g deployment.yaml"
-            sh "sed -i -e s/:\\\${NAMESPACE}/:$namespace/g namespace.yaml"
+            sh "sed -i.bak s/XX_NAMESPACE_XX/:$namespace/g deployment.yaml"
+            sh "sed -i.bak s/XX_NAMESPACE_XX/:$namespace/g namespace.yaml"
          
             // Execute kubectl commands to deploy namespace
             sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
        
-            sh "sed -i s/:\\\${IMAGE_TAG}/:$imagetag/g deployment.yaml"
+            sh "sed -i.bak s/XX_IMAGETAG_XX/:$imagetag/g deployment.yaml"
             sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"            
         }
     }
@@ -61,14 +61,14 @@ node {
            def imagetag="services/java-vote-service-redis:${env.BUILD_NUMBER}"
 
             // String replace in the deployment.yaml file
-            sh "sed -i s/:\\\${NAMESPACE}/:$namespace/g deployment.yaml"
-            sh "sed -i s/:\\\${NAMESPACE}/:$namespace/g namespace.yaml"
-       
+            sh "sed -i.bak s/XX_NAMESPACE_XX/:$namespace/g deployment.yaml"
+            sh "sed -i.bak s/XX_NAMESPACE_XX/:$namespace/g namespace.yaml"
+         
             // Execute kubectl commands to deploy namespace
             sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
        
-            sh "sed -i s/:\\\${IMAGE_TAG}/:$imagetag/g deployment.yaml"
-            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"            
+            sh "sed -i.bak s/XX_IMAGETAG_XX/:$imagetag/g deployment.yaml"
+            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"         
         }
     }
 }
