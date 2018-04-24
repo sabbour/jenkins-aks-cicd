@@ -1,0 +1,21 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: java-vote-service-deployment
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    matchLabels:
+      app: java-vote-service
+  replicas: 2 
+  template: # create pods using pod definition in this template
+    metadata:
+      namespace: ${NAMESPACE}
+      labels:
+        app: java-vote-service
+    spec:
+      containers:
+      - name: java-vote-service
+        image: ${IMAGE_NAME}
+        ports:
+        - containerPort: 8080
