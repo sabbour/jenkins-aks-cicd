@@ -15,26 +15,13 @@ node {
     }
 
     stage('Package jar file with Maven into Docker') {
-        withMaven(
-            // Maven installation declared in the Jenkins "Global Tool Configuration"
-            maven: 'M3') {
-            // Run the maven build
-            sh "mvn -f services/java-vote-service-redis/pom.xml install dockerfile:build"
-        } 
+        app = docker.build("sabbour/java-vote-service-redis")
     }
 
    stage('Push image with Mave to container registry') {
-        withMaven(
-            // Maven installation declared in the Jenkins "Global Tool Configuration"
-            maven: 'M3') {
-            // Run the maven build
-            sh "mvn -f services/java-vote-service-redis/pom.xml install dockerfile:push"
-        } 
-        /*
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        docker.withRegistry('https://sabbour.azurecr.io', 'acr-hub-credentials') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
-        */
     }
 }
