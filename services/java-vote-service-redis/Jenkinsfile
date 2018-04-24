@@ -15,14 +15,17 @@ node {
     }
 
     stage('Build image with Docker') {
-        app = docker.build("services/java-vote-service-redis")
+        app = docker.build(
+            "services/java-vote-service-redis:${env.BUILD_NUMBER}",
+            "services/java-vote-service-redis/Dockerfile"
+            )
     }
 
    stage('Push image with to container registry') {
 
         docker.withRegistry('https://sabbour.azurecr.io', 'acr-hub-credentials') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
+            app.push("services/java-vote-service-redis:${env.BUILD_NUMBER}")
+            app.push("services/java-vote-service-redis:latest")
         }
     }
 }
