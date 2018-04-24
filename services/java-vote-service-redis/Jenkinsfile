@@ -5,13 +5,21 @@ node {
         checkout scm
     }
 
+    stage('Clean') {
+        withMaven(
+            // Maven installation declared in the Jenkins "Global Tool Configuration"
+            maven: 'M3') {
+            // Run the maven build
+            sh "mvn -f services/java-vote-service-redis/pom.xml clean"
+        } 
+    }
 
     stage('Package jar file with Maven into Docker') {
         withMaven(
             // Maven installation declared in the Jenkins "Global Tool Configuration"
             maven: 'M3') {
             // Run the maven build
-            sh "sudo mvn -f services/java-vote-service-redis/pom.xml install dockerfile:build"
+            sh "mvn -f services/java-vote-service-redis/pom.xml install dockerfile:build"
         } 
     }
 
@@ -20,7 +28,7 @@ node {
             // Maven installation declared in the Jenkins "Global Tool Configuration"
             maven: 'M3') {
             // Run the maven build
-            sh "sudo mvn -f services/java-vote-service-redis/pom.xml install dockerfile:push"
+            sh "mvn -f services/java-vote-service-redis/pom.xml install dockerfile:push"
         } 
         /*
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
