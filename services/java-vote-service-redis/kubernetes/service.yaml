@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: java-vote-service
+  namespace: XX_NAMESPACE_XX
+spec:
+  selector:
+    app: java-vote-service
+  ports:
+  - port: 80
+    targetPort: 8080
