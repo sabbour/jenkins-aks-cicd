@@ -6,7 +6,7 @@ node {
     }
 
     stage('Build code with Maven') {
-        maven(
+        withMaven(
             // Maven installation declared in the Jenkins "Global Tool Configuration"
             maven: 'M3',
             // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
