@@ -39,13 +39,17 @@
 - Copy your local Kubernetes config file to the Jenkins VM
 
     ```sh
-    ssh <username>@<jenkins vm name>.<region>.cloudapp.azure.com "mkdir -p /home/<username>/.kube/" && scp ~/.kube/config <username>@<jenkins vm name>.<region>.cloudapp.azure.com:/home/azureuser/.kube/
+    ssh -o "StrictHostKeyChecking no"  <username>@<jenkins vm name>.<region>.cloudapp.azure.com sudo chmod 777 /var/lib/jenkins
+    yes | scp ~/.kube/config <username>@<jenkins vm name>.<region>.cloudapp.azure.com:/var/lib/jenkins/config
+    ssh -o "StrictHostKeyChecking no" <username>@<jenkins vm name>.<region>.cloudapp.azure.com sudo chmod 777 /var/lib/jenkins/config
     ```
 
     for example
 
     ```sh
-    ssh azureuser@jenkins-sb.westeurope.cloudapp.azure.com "mkdir -p /home/azureuser/.kube/" && scp ~/.kube/config azureuser@jenkins-sb.westeurope.cloudapp.azure.com:/home/azureuser/.kube/
+    ssh -o "StrictHostKeyChecking no" azureuser@jenkins-sb.westeurope.cloudapp.azure.com sudo chmod 777 /var/lib/jenkins
+    yes | scp ~/.kube/config azureuser@jenkins-sb.westeurope.cloudapp.azure.com:/var/lib/jenkins/config
+    ssh -o "StrictHostKeyChecking no" azureuser@jenkins-sb.westeurope.cloudapp.azure.com sudo chmod 777 /var/lib/jenkins/config
     ```
 
 - Restart Docker
