@@ -63,15 +63,19 @@ node {
         dir('services/java-vote-service-redis/kubernetes') {
             def namespace = "uat"
             def service = "java-vote-service"
-            def serviceIP = "";
+            def serviceIP = "";       
 
             echo "Waiting for Service to get an IP"
             while(serviceIP == "") {
+                //serviceIP = sh "kubectl --kubeconfig /var/lib/jenkins/config get service $service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
                 serviceIP = kubectl(namespace, "get service $service --output jsonpath=\"{.status.loadBalancer.ingress[0].ip}\"").trim()
                 if(serviceIP == "") {
                     sleep 10 // give the service some time to get an IP
                 }
             }
+
+            sleep 30 // give the pods some time to start
+            
             runIntegrationTests(frontendIp)
         }
     }
@@ -107,6 +111,8 @@ node {
 }
 
 def kubectl(namespace,cmd) {
+    echo namespace
+    echo cmd
     return sh(script: "kubectl --kubeconfig /var/lib/jenkins/config --namespace=${namespace} ${cmd}", returnStdout: true)
 }
 
