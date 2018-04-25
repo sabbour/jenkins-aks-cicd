@@ -81,7 +81,7 @@ def deploy(namespace,imagetag) {
     sh "cp deployment.yaml deployment.${namespace}.yaml"
     sh "cp namespace.yaml namespace.${namespace}.yaml"
     sh "cp service.yaml service.${namespace}.yaml"
-    sh "cp redis-deployment.yaml service.${namespace}.yaml"
+    sh "cp redis-deployment.yaml redis-deployment.${namespace}.yaml"
     sh "cp redis-service.yaml redis-service.${namespace}.yaml"
 
     // String replace namespaces
