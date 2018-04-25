@@ -17,6 +17,12 @@ spec:
       containers:
       - name: java-vote-service
         image: sabbour.azurecr.io/services/java-vote-service-redis:XX_IMAGETAG_XX
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
         ports:
         - containerPort: 8080
         env:

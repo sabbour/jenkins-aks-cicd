@@ -24,12 +24,19 @@ public class Application {
 
     static JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), System.getenv("REDIS_HOST"));
 
+    @RequestMapping(value = "/health", method = RequestMethod.POST)
+    public void health() {
+        System.out.println("Health check");  
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.hget("Cats","count");
+        }
+    }
+
     @RequestMapping(value = "/votes", method = RequestMethod.POST)
     public void add_vote(@RequestBody String vote) {
         System.out.println("Incoming vote: " + vote);  
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.hincrBy(vote, "count", 1);
-            //jedis.zadd("votes", 0, "car"); jedis.zadd("sose", 0, "bike"); 
         }
     }
 
