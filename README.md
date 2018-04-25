@@ -92,9 +92,10 @@
 
 - Under Pipeline, choose **Pipeline script from SCM**, and choose **Git** as the SCM.
 
-- Configure the **Repository URL** to point to the Git repository
+- Configure the **Repository URL** to point to the Git repository (for example: https://github.com/sabbour/kubernetes-cicd.git)
 
 - Set the Jenkins script path to `services/java-vote-service-redis/Jenkinsfile`
+
 
 ## Checkout pom.xml and Jenkinsfile
 
