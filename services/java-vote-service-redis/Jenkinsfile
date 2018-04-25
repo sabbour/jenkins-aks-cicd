@@ -52,7 +52,6 @@ node {
             while(serviceIP == "") {
                 serviceIP = sh "kubectl --kubeconfig /var/lib/jenkins/config get service $service --namespace $namespace --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
                 serviceIP = serviceIP.trim()
-                //serviceIP = kubectl(namespace, "get service $service --output jsonpath=\"{.status.loadBalancer.ingress[0].ip}\"").trim()
                 if(serviceIP == "") {
                     sleep 10 // give the service some time to get an IP
                 }
