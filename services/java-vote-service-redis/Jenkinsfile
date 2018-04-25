@@ -67,7 +67,7 @@ node {
 
             echo "Waiting for Service to get an IP"
             while(serviceIP == "") {
-                serviceIP = kubectl(namespace, " get service $service --output jsonpath=\'{.status.loadBalancer.ingress[0].ip }\'").trim()
+                serviceIP = kubectl(namespace, "get service $service --output jsonpath=\"{.status.loadBalancer.ingress[0].ip}\"").trim()
                 if(serviceIP == "") {
                     sleep 10 // give the service some time to get an IP
                 }
