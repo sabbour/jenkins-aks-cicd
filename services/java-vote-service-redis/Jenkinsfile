@@ -51,12 +51,12 @@ node {
             echo "Waiting for Service to get an IP"
             while(serviceIP == "") {
                 serviceIP = sh "kubectl --kubeconfig /var/lib/jenkins/config get service $service --namespace $namespace --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
-                serviceIP = serviceIP.trim()
                 if(serviceIP == "") {
                     sleep 10 // give the service some time to get an IP
                 }
             }
 
+            echo "Service got an IP: $serviceIP . Will wait a bit to allow the pods to start."
             sleep 30 // give the pods some time to start
             
             runIntegrationTests(serviceIP)
