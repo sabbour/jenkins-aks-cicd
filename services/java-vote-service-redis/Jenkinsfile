@@ -50,8 +50,8 @@ node {
 
             echo "Waiting for Service to get an IP"
             while(serviceIP == "") {
-                serviceIP = sh "kubectl --kubeconfig /var/lib/jenkins/config get service $service --namespace $namespace --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
-                if(serviceIP == "") {
+                serviceIP = sh(script: "kubectl --kubeconfig /var/lib/jenkins/config get service $service --namespace $namespace --output jsonpath='{.status.loadBalancer.ingress[0].ip}'", returnStdout: true)
+                if(serviceIP == "" || serviceIP == null) {
                     sleep 10 // give the service some time to get an IP
                 }
             }
@@ -99,8 +99,6 @@ def deploy(namespace,imagetag) {
 }
 
 def kubectl(namespace,cmd) {
-    echo namespace
-    echo cmd
     return sh(script: "kubectl --kubeconfig /var/lib/jenkins/config --namespace=${namespace} ${cmd}", returnStdout: true)
 }
 
