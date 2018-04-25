@@ -1,0 +1,27 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: XX_NAMESPACE_XX
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  replicas: 1
+  template: # create pods using pod definition in this template
+    metadata:
+      namespace: XX_NAMESPACE_XX
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        volumeMounts:
+        - name: redis-persistent-storage
+          mountPath: /data/redis
+        ports:
+        - containerPort: 6379
+      volumes:
+      - name: redis-persistent-storage
+        emptyDir: {}

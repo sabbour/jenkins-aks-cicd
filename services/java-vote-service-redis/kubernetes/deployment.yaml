@@ -19,5 +19,8 @@ spec:
         image: sabbour.azurecr.io/services/java-vote-service-redis:XX_IMAGETAG_XX
         ports:
         - containerPort: 8080
+        env:
+        - name: REDIS_HOST
+          value: "redis"
       imagePullSecrets:
         - name:  acr-secret

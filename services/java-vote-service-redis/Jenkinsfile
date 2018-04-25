@@ -81,11 +81,15 @@ def deploy(namespace,imagetag) {
     sh "cp deployment.yaml deployment.${namespace}.yaml"
     sh "cp namespace.yaml namespace.${namespace}.yaml"
     sh "cp service.yaml service.${namespace}.yaml"
+    sh "cp redis-deployment.yaml service.${namespace}.yaml"
+    sh "cp redis-service.yaml redis-service.${namespace}.yaml"
 
     // String replace namespaces
     sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g deployment.${namespace}.yaml"
     sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g namespace.${namespace}.yaml"
     sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g service.${namespace}.yaml"               
+    sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g redis-deployment.${namespace}.yaml"               
+    sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g redis-service.${namespace}.yaml"               
 
     // Create namespace
     kubectl(namespace, "apply -f namespace.${namespace}.yaml")
@@ -96,6 +100,12 @@ def deploy(namespace,imagetag) {
         
     // Create service
     kubectl(namespace, "apply -f service.${namespace}.yaml")  
+
+    // Create redis deployment
+    kubectl(namespace, "apply -f redis-deployment.${namespace}.yaml")  
+
+    // Create redis service
+    kubectl(namespace, "apply -f redis-service.${namespace}.yaml")  
 }
 
 def kubectl(namespace,cmd) {

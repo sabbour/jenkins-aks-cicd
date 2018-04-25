@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis
+  namespace: XX_NAMESPACE_XX
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
