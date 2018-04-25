@@ -45,16 +45,13 @@ node {
             sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g service.yaml"            
          
             // Create namespace
-            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
             kubectl(namespace, "apply -f namespace.yaml")
        
             // String replace the image name in the deployment and create the deployment
             sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.yaml"
-            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml" 
             kubectl(namespace, "apply -f deployment.yaml")
               
             // Create service
-            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f service.yaml"
             kubectl(namespace, "apply -f service.yaml")
         }
     }
@@ -96,16 +93,13 @@ node {
             sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g service.yaml"            
          
             // Create namespace
-            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
             kubectl(namespace, "apply -f namespace.yaml")
        
             // String replace the image name in the deployment and create the deployment
             sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.yaml"
-            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml" 
             kubectl(namespace, "apply -f deployment.yaml")
               
             // Create service
-            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f service.yaml"
             kubectl(namespace, "apply -f service.yaml")      
         }
     }
