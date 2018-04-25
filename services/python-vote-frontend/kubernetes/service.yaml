@@ -1,11 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: java-vote-service
+  name: python-vote-service
   namespace: XX_NAMESPACE_XX
 spec:
   selector:
-    app: java-vote-service
+    app: python-vote-service
   type: LoadBalancer
   ports:
   - port: 80
