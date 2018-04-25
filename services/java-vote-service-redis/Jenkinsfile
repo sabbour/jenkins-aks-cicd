@@ -45,15 +45,32 @@ node {
             sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g service.yaml"            
          
             // Create namespace
-            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
+            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
+            kubectl(namespace, "apply -f namespace.yaml")
        
             // String replace the image name in the deployment and create the deployment
             sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.yaml"
-            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"   
-  
+            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml" 
+            kubectl(namespace, "apply -f deployment.yaml")
+              
             // Create service
-            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f service.yaml"
-       
+            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f service.yaml"
+            kubectl(namespace, "apply -f service.yaml")
+        }
+    }
+
+    stage("Verify UAT") {
+        dir('services/java-vote-service-redis/kubernetes') {
+            def namespace = "uat"
+            def service = "java-vote-service"
+            def serviceIP = "";
+
+            echo "Waiting for Service to get an IP"
+            while(serviceIP == "") {
+                serviceIP = kubectl(namespace, " get service $service --output jsonpath='{.status.loadBalancer.ingress[0].ip }'").trim()
+                sleep 10 // give the service some time to get an IP
+            }
+            runIntegrationTests(frontendIp)
         }
     }
 
@@ -72,14 +89,32 @@ node {
             sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g service.yaml"            
          
             // Create namespace
-            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
+            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f namespace.yaml"
+            kubectl(namespace, "apply -f namespace.yaml")
        
             // String replace the image name in the deployment and create the deployment
             sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.yaml"
-            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml"   
-  
+            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f deployment.yaml" 
+            kubectl(namespace, "apply -f deployment.yaml")
+              
             // Create service
-            sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f service.yaml"        
+            //sh "kubectl apply --kubeconfig /var/lib/jenkins/config -f service.yaml"
+            kubectl(namespace, "apply -f service.yaml")      
         }
+    }
+}
+
+def kubectl(namespace,cmd) {
+    return sh(script: "kubectl --kubeconfig /var/lib/jenkins/config --namespace=${namespace} ${cmd}", returnStdout: true)
+}
+
+def runIntegrationTests(frontendIp) {
+    echo "Running integration tests to service $frontendIp"
+    def resp = sh(script: "curl -sL -w '%{http_code}' -o /dev/null  ${frontendIp} 2>&1", returnStdout: true).trim()
+    if (resp != "200") {
+        error "Could not reach new service at $frontendIp"
+    }
+    else {
+        echo "Service OK."
     }
 }
