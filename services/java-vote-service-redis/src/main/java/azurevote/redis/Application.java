@@ -24,11 +24,14 @@ public class Application {
 
     static JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), System.getenv("REDIS_HOST"));
 
-    @RequestMapping(value = "/health", method = RequestMethod.POST)
-    public void health() {
+    @RequestMapping(value = "/health", method = RequestMethod.GET)
+    public String health() {
         System.out.println("Health check");  
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.hget("Cats","count");
+            return "OK!";
+        } catch(Exception ex) {
+            return "NOT OK! " + ex.getMessage();
         }
     }
 
