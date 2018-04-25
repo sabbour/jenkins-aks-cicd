@@ -88,14 +88,14 @@ def deploy(namespace,imagetag) {
     sh "sed s/XX_NAMESPACE_XX/$namespace/g service.${namespace}.yaml"               
 
     // Create namespace
-    kubectl(namespace, "apply -f namespace.yaml")
+    kubectl(namespace, "apply -f namespace.${namespace}.yaml")
 
     // String replace the image name in the deployment and create the deployment
-    sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.yaml"
-    kubectl(namespace, "apply -f deployment.yaml")
+    sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.${namespace}.yaml"
+    kubectl(namespace, "apply -f deployment.${namespace}.yaml")
         
     // Create service
-    kubectl(namespace, "apply -f service.yaml")  
+    kubectl(namespace, "apply -f service.${namespace}.yaml")  
 }
 
 def kubectl(namespace,cmd) {
