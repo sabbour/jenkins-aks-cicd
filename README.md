@@ -106,7 +106,7 @@ In the `services/java-vote-service-redis/kubernetes` folder, have a look at the 
 
 Also note that this configuration was done for a Kubernetes 1.9.6 cluster. You may need to update the apiVersions accordingly, depending on your cluster version. Refer to http://kubernetes.io.
 
-In the `services/java-vote-service-redis/kubernetes/deployment.yaml`, make note of the `imagePullSecret` and make sure that your Kubernetes cluster has such secret configured for your namespaces corresponding to your Azure Container Registry credentials.
+In the `services/java-vote-service-redis/kubernetes/deployment.yaml`, make note of the `imagePullSecret` and make sure that your Kubernetes cluster has such secret configured for your namespaces corresponding to your Azure Container Registry credentials. Follow the documentation here to set the secret up: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 
 ## Trigger the build
 
