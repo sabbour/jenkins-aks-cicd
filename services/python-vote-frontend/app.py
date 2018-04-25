@@ -15,7 +15,7 @@ button2 =       "Dogs"
 title =         "Azure Vote App"
 
 # Service endpoint
-api_url_base = 'http://vote-backend:8080'
+api_url_base = 'http://' + os.environ['BACKEND']
 
 # Change title to host name to demo NLB
 title = title + " " + socket.gethostname()

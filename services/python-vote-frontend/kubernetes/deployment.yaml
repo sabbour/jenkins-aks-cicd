@@ -1,0 +1,32 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: python-vote-frontend-deployment
+  namespace: XX_NAMESPACE_XX
+spec:
+  selector:
+    matchLabels:
+      app: python-vote-frontend
+  replicas: 2 
+  template: # create pods using pod definition in this template
+    metadata:
+      namespace: XX_NAMESPACE_XX
+      labels:
+        app: python-vote-frontend
+    spec:
+      containers:
+      - name: python-vote-frontend
+        image: sabbour.azurecr.io/services/python-vote-frontend:XX_IMAGETAG_XX
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: BACKEND
+          value: "java-vote-service.XX_NAMESPACE_XX:80"
+      imagePullSecrets:
+        - name:  acr-secret
