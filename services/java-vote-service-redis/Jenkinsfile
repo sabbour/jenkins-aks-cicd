@@ -67,8 +67,9 @@ node {
 
             echo "Waiting for Service to get an IP"
             while(serviceIP == "") {
-                //serviceIP = sh "kubectl --kubeconfig /var/lib/jenkins/config get service $service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
-                serviceIP = kubectl(namespace, "get service $service --output jsonpath=\"{.status.loadBalancer.ingress[0].ip}\"").trim()
+                serviceIP = sh "kubectl --kubeconfig /var/lib/jenkins/config get service $service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
+                serviceIP = serviceIP.trim()
+                //serviceIP = kubectl(namespace, "get service $service --output jsonpath=\"{.status.loadBalancer.ingress[0].ip}\"").trim()
                 if(serviceIP == "") {
                     sleep 10 // give the service some time to get an IP
                 }
@@ -76,7 +77,7 @@ node {
 
             sleep 30 // give the pods some time to start
             
-            runIntegrationTests(frontendIp)
+            runIntegrationTests(serviceIP)
         }
     }
 
