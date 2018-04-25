@@ -95,7 +95,7 @@ def kubectl(namespace,cmd) {
 
 def runIntegrationTests(frontendIp) {
     echo "Running integration tests to service $frontendIp"
-    def resp = sh(script: "curl -sL -w '%{http_code}' -o /dev/null  ${frontendIp.trim()}/health 2>&1", returnStdout: true).trim()
+    def resp = sh(script: "curl -sL -w '%{http_code}' -o /dev/null  ${frontendIp.trim()} 2>&1", returnStdout: true).trim()
     if (resp != "200") {
         error "Could not reach new service at $frontendIp"
     }

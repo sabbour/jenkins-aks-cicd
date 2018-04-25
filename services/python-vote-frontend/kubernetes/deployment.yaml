@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: python-vote-frontend
-  replicas: 2 
+  replicas: 5
   template: # create pods using pod definition in this template
     metadata:
       namespace: XX_NAMESPACE_XX
