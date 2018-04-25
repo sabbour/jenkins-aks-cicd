@@ -5,7 +5,7 @@ metadata:
   namespace: XX_NAMESPACE_XX
 spec:
   selector:
-    app: python-vote-frontend-service
+    app: python-vote-frontend
   type: LoadBalancer
   ports:
   - port: 80

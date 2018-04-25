@@ -36,7 +36,7 @@
     apt-get install -y kubectl
     ```
 
-- Copy your local Kubernetes config file to the Jenkins VM at /var/lib/jenkins/config
+- Copy your local Kubernetes config file to the Jenkins VM at `/var/lib/jenkins/config`. **You need to run those commands on your own machine.**
 
     ```sh
     ssh -o "StrictHostKeyChecking no"  <username>@<jenkins vm name>.<region>.cloudapp.azure.com sudo chmod 777 /var/lib/jenkins
