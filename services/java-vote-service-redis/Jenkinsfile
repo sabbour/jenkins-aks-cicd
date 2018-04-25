@@ -38,21 +38,7 @@ node {
             ])
 
             def imagetag="${env.BUILD_NUMBER}"
-
-            // String replace namespaces
-            sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g deployment.yaml"
-            sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g namespace.yaml"
-            sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g service.yaml"            
-         
-            // Create namespace
-            kubectl(namespace, "apply -f namespace.yaml")
-       
-            // String replace the image name in the deployment and create the deployment
-            sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.yaml"
-            kubectl(namespace, "apply -f deployment.yaml")
-              
-            // Create service
-            kubectl(namespace, "apply -f service.yaml")
+            deploy($namespace,$imagetag)    
         }
     }
 
@@ -64,7 +50,7 @@ node {
 
             echo "Waiting for Service to get an IP"
             while(serviceIP == "") {
-                serviceIP = sh "kubectl --kubeconfig /var/lib/jenkins/config get service $service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
+                serviceIP = sh "kubectl --kubeconfig /var/lib/jenkins/config get service $service --namespace $namespace --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
                 serviceIP = serviceIP.trim()
                 //serviceIP = kubectl(namespace, "get service $service --output jsonpath=\"{.status.loadBalancer.ingress[0].ip}\"").trim()
                 if(serviceIP == "") {
@@ -85,24 +71,32 @@ node {
                 [$class: 'TextParameterDefinition', defaultValue: 'prod', description: 'Environment', name: 'env']
             ])
 
-           def imagetag="${env.BUILD_NUMBER}"
-
-            // String replace namespaces
-            sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g deployment.yaml"
-            sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g namespace.yaml"
-            sh "sed -i.bak s/XX_NAMESPACE_XX/$namespace/g service.yaml"            
-         
-            // Create namespace
-            kubectl(namespace, "apply -f namespace.yaml")
-       
-            // String replace the image name in the deployment and create the deployment
-            sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.yaml"
-            kubectl(namespace, "apply -f deployment.yaml")
-              
-            // Create service
-            kubectl(namespace, "apply -f service.yaml")      
+            def imagetag="${env.BUILD_NUMBER}"
+            deploy($namespace,$imagetag)    
         }
     }
+}
+
+def deploy(namespace,imagetag) {
+    // Create a copy for this environment
+    sh "cp deployment.yaml deployment.${namespace}.yaml"
+    sh "cp namespace.yaml namespace.${namespace}.yaml"
+    sh "cp service.yaml service.${namespace}.yaml"
+
+    // String replace namespaces
+    sh "sed s/XX_NAMESPACE_XX/$namespace/g deployment.${namespace}.yaml"
+    sh "sed s/XX_NAMESPACE_XX/$namespace/g namespace.${namespace}.yaml"
+    sh "sed s/XX_NAMESPACE_XX/$namespace/g service.${namespace}.yaml"               
+
+    // Create namespace
+    kubectl(namespace, "apply -f namespace.yaml")
+
+    // String replace the image name in the deployment and create the deployment
+    sh "sed -i.bak s/XX_IMAGETAG_XX/$imagetag/g deployment.yaml"
+    kubectl(namespace, "apply -f deployment.yaml")
+        
+    // Create service
+    kubectl(namespace, "apply -f service.yaml")  
 }
 
 def kubectl(namespace,cmd) {
