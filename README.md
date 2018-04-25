@@ -108,11 +108,19 @@ Also note that this configuration was done for a Kubernetes 1.9.6 cluster. You m
 
 In the `services/java-vote-service-redis/kubernetes/deployment.yaml`, make note of the `imagePullSecret` and make sure that your Kubernetes cluster has such secret configured for your namespaces corresponding to your Azure Container Registry credentials. Follow the documentation here to set the secret up: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 
-You can create a secret as follows
+You can create a secret as follows **for each namespace**
 
-```sh
-kubectl create secret docker-registry acr-secret --docker-server=<your-registry-server> --docker-username=<acr-username> --docker-password=<your-pword> --docker-email=<your-email>
-```
+- UAT:
+
+  ```sh
+  kubectl create secret docker-registry acr-secret --namespace uat --docker-server=<your-registry-server> --docker-username=<acr-username> --docker-password=<your-pword> --docker-email=<your-email>
+  ```
+
+- PROD:
+
+  ```sh
+  kubectl create secret docker-registry acr-secret --namespace prod --docker-server=<your-registry-server> --docker-username=<acr-username> --docker-password=<your-pword> --docker-email=<your-email>
+  ```
 
 ## Trigger the build
 
