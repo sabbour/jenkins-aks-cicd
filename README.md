@@ -131,4 +131,4 @@ You can create a secret as follows **for each namespace**
 
 ## Trigger the build
 
-In Jenkins, trigger a build and observe the pipeline, when the build is done, you should find a new image pushed in your Azure Container Registry, tagged with the current build number for the image tag.
+In Jenkins, trigger a build and observe the pipeline, when the build is done, you should find a new image pushed in your Azure Container Registry, tagged with the current build number.
